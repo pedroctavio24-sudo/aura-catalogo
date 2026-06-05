@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AURA ·  — Catálogo 2026</title>
+<title>AURA — Catálogo 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -19,6 +19,7 @@
     --row-b: #F9EEF0;
     --green: #2D6A4F;
     --rose: #D4849A;
+    --wa: #25D366;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:var(--bg); font-family:'Jost',sans-serif; color:var(--dark); min-height:100vh; }
@@ -51,18 +52,44 @@
   .catalog-table tbody tr:nth-child(even) { background:var(--row-b); }
   .catalog-table tbody tr { border-bottom:1px solid var(--divider); transition:background 0.18s; }
   .catalog-table tbody tr:hover { background:var(--gold-pale); }
-  .catalog-table tbody td { padding:9px 12px; font-size:12.5px; color:var(--dark); }
+  .catalog-table tbody td { padding:9px 12px; font-size:12.5px; color:var(--dark); vertical-align:middle; }
   .catalog-table tbody td.model { font-weight:500; }
   .catalog-table tbody td.color { color:var(--gray); font-size:11.5px; }
   .catalog-table tbody td.price { text-align:right; font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:600; color:var(--gold); white-space:nowrap; }
+  .catalog-table tbody td.action { text-align:right; padding-right:10px; white-space:nowrap; }
+
+  /* WhatsApp button */
+  .btn-wa {
+    display:inline-flex; align-items:center; gap:5px;
+    background:var(--wa); color:white;
+    font-family:'Jost',sans-serif; font-size:10px; font-weight:600;
+    letter-spacing:0.8px; text-transform:uppercase;
+    padding:5px 10px; border-radius:20px;
+    text-decoration:none; white-space:nowrap;
+    transition:opacity 0.2s, transform 0.15s;
+    box-shadow:0 2px 8px rgba(37,211,102,0.3);
+  }
+  .btn-wa:hover { opacity:0.88; transform:scale(1.04); }
+  .btn-wa svg { width:13px; height:13px; fill:white; flex-shrink:0; }
 
   .badge { display:inline-block; font-size:9px; font-weight:600; letter-spacing:1px; text-transform:uppercase; padding:2px 7px; border-radius:20px; margin-left:6px; vertical-align:middle; }
   .badge-green  { background:var(--green); color:white; }
   .badge-rose   { background:var(--rose);  color:white; }
   .badge-gray   { background:var(--gray);  color:white; }
 
-  footer { background:var(--gold); color:white; text-align:center; padding:14px 20px; font-size:10px; letter-spacing:1px; line-height:1.8; margin-top:32px; }
+  /* Floating WA button */
+  .float-wa {
+    position:fixed; bottom:22px; right:18px; z-index:999;
+    background:var(--wa); color:white;
+    width:54px; height:54px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 18px rgba(37,211,102,0.45);
+    text-decoration:none; transition:transform 0.2s;
+  }
+  .float-wa:hover { transform:scale(1.1); }
+  .float-wa svg { width:28px; height:28px; fill:white; }
 
+  footer { background:var(--gold); color:white; text-align:center; padding:14px 20px; font-size:10px; letter-spacing:1px; line-height:1.8; margin-top:32px; }
   .page-wrap { position:relative; border:1px solid var(--divider); margin:0 auto; max-width:900px; }
 
   @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
@@ -70,8 +97,9 @@
 
   @media(max-width:600px){
     .info-strip{gap:14px;}
-    .catalog-table thead th,.catalog-table tbody td{padding:7px 8px;font-size:11.5px;}
-    .catalog-table tbody td.price{font-size:14px;}
+    .catalog-table thead th,.catalog-table tbody td{padding:7px 6px;font-size:11px;}
+    .catalog-table tbody td.price{font-size:13px;}
+    .btn-wa{font-size:9px;padding:4px 8px;}
     header img.logo{width:200px;}
     .header-meta h1{font-size:22px;}
   }
@@ -99,40 +127,47 @@
 
 <main>
 
+<!-- WA SVG macro -->
+<svg style="display:none">
+  <symbol id="wa-icon" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </symbol>
+</svg>
+
 <!-- ══════════ LACRADOS ══════════ -->
 <div class="section-title">📱 Lacrados Apple — 1 Ano Garantia Apple ✅</div>
 
 <div class="subsection">🔥 iPhone 16 Series · Lacrado</div>
 <table class="catalog-table">
-  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th></tr></thead>
+  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th><th></th></tr></thead>
   <tbody>
-    <tr><td class="model">iPhone 16 Pro Max 256GB</td><td class="color">—</td><td class="price">R$ 7.699</td></tr>
-    <tr><td class="model">iPhone 16 Pro 512GB</td><td class="color">—</td><td class="price">R$ 6.499</td></tr>
-    <tr><td class="model">iPhone 16 128GB</td><td class="color">—</td><td class="price">R$ 4.099</td></tr>
+    <tr><td class="model">iPhone 16 Pro Max 256GB</td><td class="color">—</td><td class="price">R$ 7.699</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2016%20Pro%20Max%20256GB%20Lacrado%20-%20R%24%207.699"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 16 Pro 512GB</td><td class="color">—</td><td class="price">R$ 6.499</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2016%20Pro%20512GB%20Lacrado%20-%20R%24%206.499"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 16 128GB</td><td class="color">—</td><td class="price">R$ 4.099</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2016%20128GB%20Lacrado%20-%20R%24%204.099"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
   </tbody>
 </table>
 
 <div class="subsection">🔥 iPhone 17 Series · Lacrado</div>
 <table class="catalog-table">
-  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th></tr></thead>
+  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th><th></th></tr></thead>
   <tbody>
-    <tr><td class="model">iPhone 17 Pro 256GB</td><td class="color">Orange</td><td class="price">R$ 6.999</td></tr>
-    <tr><td class="model">iPhone 17 Pro 256GB</td><td class="color">Silver</td><td class="price">R$ 6.999</td></tr>
-    <tr><td class="model">iPhone 17 Pro Max 256GB</td><td class="color">Orange</td><td class="price">R$ 7.299</td></tr>
-    <tr><td class="model">iPhone 17 Pro Max 256GB</td><td class="color">Blue</td><td class="price">R$ 7.299</td></tr>
-    <tr><td class="model">iPhone 17 Pro Max 256GB</td><td class="color">Silver</td><td class="price">R$ 7.499</td></tr>
-    <tr><td class="model">iPhone 17 Pro Max 512GB</td><td class="color">Orange</td><td class="price">R$ 8.799</td></tr>
-    <tr><td class="model">iPhone 17 Pro Max 512GB</td><td class="color">Blue</td><td class="price">R$ 8.999</td></tr>
-    <tr><td class="model">iPhone 17 Pro Max 512GB</td><td class="color">Silver</td><td class="price">R$ 9.199</td></tr>
+    <tr><td class="model">iPhone 17 Pro 256GB</td><td class="color">Orange</td><td class="price">R$ 6.999</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2017%20Pro%20256GB%20Orange%20Lacrado%20-%20R%24%206.999"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 17 Pro 256GB</td><td class="color">Silver</td><td class="price">R$ 6.999</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2017%20Pro%20256GB%20Silver%20Lacrado%20-%20R%24%206.999"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 17 Pro Max 256GB</td><td class="color">Orange</td><td class="price">R$ 7.299</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2017%20Pro%20Max%20256GB%20Orange%20Lacrado%20-%20R%24%207.299"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 17 Pro Max 256GB</td><td class="color">Blue</td><td class="price">R$ 7.299</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2017%20Pro%20Max%20256GB%20Blue%20Lacrado%20-%20R%24%207.299"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 17 Pro Max 256GB</td><td class="color">Silver</td><td class="price">R$ 7.499</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2017%20Pro%20Max%20256GB%20Silver%20Lacrado%20-%20R%24%207.499"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 17 Pro Max 512GB</td><td class="color">Orange</td><td class="price">R$ 8.799</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2017%20Pro%20Max%20512GB%20Orange%20Lacrado%20-%20R%24%208.799"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 17 Pro Max 512GB</td><td class="color">Blue</td><td class="price">R$ 8.999</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2017%20Pro%20Max%20512GB%20Blue%20Lacrado%20-%20R%24%208.999"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 17 Pro Max 512GB</td><td class="color">Silver</td><td class="price">R$ 9.199</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2017%20Pro%20Max%20512GB%20Silver%20Lacrado%20-%20R%24%209.199"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
   </tbody>
 </table>
 
 <div class="subsection">iPhone 15 · Lacrado Indiano <span class="badge badge-green">Garantia Apple 04/2027</span></div>
 <table class="catalog-table">
-  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th></tr></thead>
+  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th><th></th></tr></thead>
   <tbody>
-    <tr><td class="model">iPhone 15 128GB</td><td class="color">Blue</td><td class="price">R$ 3.799</td></tr>
-    <tr><td class="model">iPhone 15 128GB</td><td class="color">Black</td><td class="price">R$ 3.799</td></tr>
+    <tr><td class="model">iPhone 15 128GB</td><td class="color">Blue</td><td class="price">R$ 3.799</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2015%20128GB%20Blue%20Indiano%20-%20R%24%203.799"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 15 128GB</td><td class="color">Black</td><td class="price">R$ 3.799</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2015%20128GB%20Black%20Indiano%20-%20R%24%203.799"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
   </tbody>
 </table>
 
@@ -141,97 +176,103 @@
 
 <div class="subsection">iPad 11</div>
 <table class="catalog-table">
-  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th></tr></thead>
+  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th><th></th></tr></thead>
   <tbody>
-    <tr><td class="model">iPad 11 128GB</td><td class="color">White</td><td class="price">R$ 2.499</td></tr>
-    <tr><td class="model">iPad 11 128GB</td><td class="color">Rosa</td><td class="price">R$ 2.499</td></tr>
+    <tr><td class="model">iPad 11 128GB</td><td class="color">White</td><td class="price">R$ 2.499</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPad%2011%20128GB%20White%20-%20R%24%202.499"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPad 11 128GB</td><td class="color">Rosa</td><td class="price">R$ 2.499</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPad%2011%20128GB%20Rosa%20-%20R%24%202.499"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
   </tbody>
 </table>
 
 <div class="subsection">⌚ Garmin Forerunner</div>
 <table class="catalog-table">
-  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th></tr></thead>
+  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th><th></th></tr></thead>
   <tbody>
-    <tr><td class="model">Garmin Forerunner 55</td><td class="color">White</td><td class="price">R$ 1.099</td></tr>
-    <tr><td class="model">Garmin Forerunner 55</td><td class="color">Black</td><td class="price">R$ 1.099</td></tr>
-    <tr><td class="model">Garmin Forerunner 165</td><td class="color">Cinza</td><td class="price">R$ 1.499</td></tr>
+    <tr><td class="model">Garmin Forerunner 55</td><td class="color">White</td><td class="price">R$ 1.099</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20Garmin%20Forerunner%2055%20White%20-%20R%24%201.099"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">Garmin Forerunner 55</td><td class="color">Black</td><td class="price">R$ 1.099</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20Garmin%20Forerunner%2055%20Black%20-%20R%24%201.099"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">Garmin Forerunner 165</td><td class="color">Cinza</td><td class="price">R$ 1.499</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20Garmin%20Forerunner%20165%20Cinza%20-%20R%24%201.499"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
   </tbody>
 </table>
 
-<!-- ══════════ SWAP 16 ══════════ -->
+<!-- ══════════ SWAP ══════════ -->
 <div class="section-title">🔄 Swap (Usados) · Garantia 30 Dias</div>
 
 <div class="subsection">🔥 iPhone 16 Series</div>
 <table class="catalog-table">
-  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th></tr></thead>
+  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th><th></th></tr></thead>
   <tbody>
-    <tr><td class="model">iPhone 16 Pro Max 512GB</td><td class="color">Desert / Preto</td><td class="price">R$ 6.499</td></tr>
-    <tr><td class="model">iPhone 16 Pro Max 256GB</td><td class="color">Desert / Preto</td><td class="price">R$ 5.999</td></tr>
-    <tr><td class="model">iPhone 16 Pro Max 256GB <span class="badge badge-gray">Pc</span></td><td class="color">Black</td><td class="price">R$ 5.799</td></tr>
-    <tr><td class="model">iPhone 16 Pro 256GB</td><td class="color">Desert / Silver / Natural</td><td class="price">R$ 5.299</td></tr>
-    <tr><td class="model">iPhone 16 Pro 128GB</td><td class="color">Preto / Desert / White / Natural</td><td class="price">R$ 4.999</td></tr>
+    <tr><td class="model">iPhone 16 Pro Max 512GB</td><td class="color">Desert / Preto</td><td class="price">R$ 6.499</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2016%20Pro%20Max%20512GB%20Swap%20-%20R%24%206.499"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 16 Pro Max 256GB</td><td class="color">Desert / Preto</td><td class="price">R$ 5.999</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2016%20Pro%20Max%20256GB%20Swap%20-%20R%24%205.999"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 16 Pro Max 256GB <span class="badge badge-gray">Pc</span></td><td class="color">Black</td><td class="price">R$ 5.799</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2016%20Pro%20Max%20256GB%20Pc%20Swap%20-%20R%24%205.799"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 16 Pro 256GB</td><td class="color">Desert / Silver / Natural</td><td class="price">R$ 5.299</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2016%20Pro%20256GB%20Swap%20-%20R%24%205.299"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 16 Pro 128GB</td><td class="color">Preto / Desert / White / Natural</td><td class="price">R$ 4.999</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2016%20Pro%20128GB%20Swap%20-%20R%24%204.999"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
   </tbody>
 </table>
 
 <div class="subsection">🔥 iPhone 15 Series</div>
 <table class="catalog-table">
-  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th></tr></thead>
+  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th><th></th></tr></thead>
   <tbody>
-    <tr><td class="model">iPhone 15 Pro Max 512GB</td><td class="color">White / Blue / Natural</td><td class="price">R$ 4.799</td></tr>
-    <tr><td class="model">iPhone 15 Pro Max 256GB <span class="badge badge-rose">Grd A-</span></td><td class="color">Blue / Black</td><td class="price">R$ 4.299</td></tr>
-    <tr><td class="model">iPhone 15 Pro 128GB</td><td class="color">White / Blue</td><td class="price">R$ 3.799</td></tr>
-    <tr><td class="model">iPhone 15 Pro 128GB <span class="badge badge-gray">Pc</span></td><td class="color">Blue / Black</td><td class="price">R$ 3.699</td></tr>
-    <tr><td class="model">iPhone 15 Plus 128GB</td><td class="color">Black / Verde</td><td class="price">R$ 3.199</td></tr>
-    <tr><td class="model">iPhone 15 128GB</td><td class="color">Preto / Verde / Rosa</td><td class="price">R$ 2.999</td></tr>
-    <tr><td class="model">iPhone 15 128GB <span class="badge badge-rose">Grd A-</span></td><td class="color">Black</td><td class="price">R$ 2.799</td></tr>
+    <tr><td class="model">iPhone 15 Pro Max 512GB</td><td class="color">White / Blue / Natural</td><td class="price">R$ 4.799</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2015%20Pro%20Max%20512GB%20Swap%20-%20R%24%204.799"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 15 Pro Max 256GB <span class="badge badge-rose">Grd A-</span></td><td class="color">Blue / Black</td><td class="price">R$ 4.299</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2015%20Pro%20Max%20256GB%20Swap%20-%20R%24%204.299"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 15 Pro 128GB</td><td class="color">White / Blue</td><td class="price">R$ 3.799</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2015%20Pro%20128GB%20Swap%20-%20R%24%203.799"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 15 Pro 128GB <span class="badge badge-gray">Pc</span></td><td class="color">Blue / Black</td><td class="price">R$ 3.699</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2015%20Pro%20128GB%20Pc%20Swap%20-%20R%24%203.699"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 15 Plus 128GB</td><td class="color">Black / Verde</td><td class="price">R$ 3.199</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2015%20Plus%20128GB%20Swap%20-%20R%24%203.199"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 15 128GB</td><td class="color">Preto / Verde / Rosa</td><td class="price">R$ 2.999</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2015%20128GB%20Swap%20-%20R%24%202.999"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 15 128GB <span class="badge badge-rose">Grd A-</span></td><td class="color">Black</td><td class="price">R$ 2.799</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2015%20128GB%20Grd%20A-%20Swap%20-%20R%24%202.799"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
   </tbody>
 </table>
 
 <div class="subsection">⚡ iPhone 14 Series</div>
 <table class="catalog-table">
-  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th></tr></thead>
+  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th><th></th></tr></thead>
   <tbody>
-    <tr><td class="model">iPhone 14 Pro Max 256GB</td><td class="color">Preto / Roxo</td><td class="price">R$ 3.899</td></tr>
-    <tr><td class="model">iPhone 14 Pro Max 256GB <span class="badge badge-rose">Grd B</span></td><td class="color">Black / Roxo</td><td class="price">R$ 3.599</td></tr>
-    <tr><td class="model">iPhone 14 Pro Max 128GB</td><td class="color">Preto / Roxo</td><td class="price">R$ 3.599</td></tr>
-    <tr><td class="model">iPhone 14 Pro 128GB</td><td class="color">Black / Roxo</td><td class="price">R$ 3.199</td></tr>
-    <tr><td class="model">iPhone 14 Pro 128GB <span class="badge badge-gray">Bat 77%</span></td><td class="color">Black / Preto</td><td class="price">R$ 3.099</td></tr>
-    <tr><td class="model">iPhone 14 Plus 128GB</td><td class="color">Preto / White / Red</td><td class="price">R$ 2.599</td></tr>
-    <tr><td class="model">iPhone 14 128GB</td><td class="color">Blue / Black / Red / Roxo</td><td class="price">R$ 2.499</td></tr>
+    <tr><td class="model">iPhone 14 Pro Max 256GB</td><td class="color">Preto / Roxo</td><td class="price">R$ 3.899</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2014%20Pro%20Max%20256GB%20Swap%20-%20R%24%203.899"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 14 Pro Max 256GB <span class="badge badge-rose">Grd B</span></td><td class="color">Black / Roxo</td><td class="price">R$ 3.599</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2014%20Pro%20Max%20256GB%20Grd%20B%20Swap%20-%20R%24%203.599"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 14 Pro Max 128GB</td><td class="color">Preto / Roxo</td><td class="price">R$ 3.599</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2014%20Pro%20Max%20128GB%20Swap%20-%20R%24%203.599"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 14 Pro 128GB</td><td class="color">Black / Roxo</td><td class="price">R$ 3.199</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2014%20Pro%20128GB%20Swap%20-%20R%24%203.199"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 14 Pro 128GB <span class="badge badge-gray">Bat 77%</span></td><td class="color">Black / Preto</td><td class="price">R$ 3.099</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2014%20Pro%20128GB%20Bat%2077%25%20Swap%20-%20R%24%203.099"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 14 Plus 128GB</td><td class="color">Preto / White / Red</td><td class="price">R$ 2.599</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2014%20Plus%20128GB%20Swap%20-%20R%24%202.599"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 14 128GB</td><td class="color">Blue / Black / Red / Roxo</td><td class="price">R$ 2.499</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2014%20128GB%20Swap%20-%20R%24%202.499"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
   </tbody>
 </table>
 
 <div class="subsection">💎 iPhone 13 Series</div>
 <table class="catalog-table">
-  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th></tr></thead>
+  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th><th></th></tr></thead>
   <tbody>
-    <tr><td class="model">iPhone 13 Pro Max 256GB</td><td class="color">Blue / Black / Verde</td><td class="price">R$ 3.299</td></tr>
-    <tr><td class="model">iPhone 13 Pro Max 128GB <span class="badge badge-gray">USA</span></td><td class="color">Black / Verde / Blue / Gold</td><td class="price">R$ 2.999</td></tr>
-    <tr><td class="model">iPhone 13 Pro 256GB <span class="badge badge-gray">USA</span></td><td class="color">Preto / Blue / Green</td><td class="price">R$ 2.899</td></tr>
-    <tr><td class="model">iPhone 13 Pro 128GB <span class="badge badge-gray">USA</span></td><td class="color">Blue / Preto / Green</td><td class="price">R$ 2.699</td></tr>
-    <tr><td class="model">iPhone 13 256GB <span class="badge badge-gray">USA</span></td><td class="color">Green / Red</td><td class="price">R$ 2.499</td></tr>
-    <tr><td class="model">iPhone 13 128GB <span class="badge badge-gray">USA</span></td><td class="color">Blue / Black / White</td><td class="price">R$ 2.299</td></tr>
-    <tr><td class="model">iPhone 13 128GB <span class="badge badge-rose">Grd A-</span></td><td class="color">Preto</td><td class="price">R$ 2.099</td></tr>
+    <tr><td class="model">iPhone 13 Pro Max 256GB</td><td class="color">Blue / Black / Verde</td><td class="price">R$ 3.299</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2013%20Pro%20Max%20256GB%20Swap%20-%20R%24%203.299"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 13 Pro Max 128GB <span class="badge badge-gray">USA</span></td><td class="color">Black / Verde / Blue / Gold</td><td class="price">R$ 2.999</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2013%20Pro%20Max%20128GB%20Swap%20-%20R%24%202.999"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 13 Pro 256GB <span class="badge badge-gray">USA</span></td><td class="color">Preto / Blue / Green</td><td class="price">R$ 2.899</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2013%20Pro%20256GB%20Swap%20-%20R%24%202.899"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 13 Pro 128GB <span class="badge badge-gray">USA</span></td><td class="color">Blue / Preto / Green</td><td class="price">R$ 2.699</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2013%20Pro%20128GB%20Swap%20-%20R%24%202.699"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 13 256GB <span class="badge badge-gray">USA</span></td><td class="color">Green / Red</td><td class="price">R$ 2.499</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2013%20256GB%20Swap%20-%20R%24%202.499"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 13 128GB <span class="badge badge-gray">USA</span></td><td class="color">Blue / Black / White</td><td class="price">R$ 2.299</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2013%20128GB%20Swap%20-%20R%24%202.299"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 13 128GB <span class="badge badge-rose">Grd A-</span></td><td class="color">Preto</td><td class="price">R$ 2.099</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2013%20128GB%20Grd%20A-%20Swap%20-%20R%24%202.099"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
   </tbody>
 </table>
 
 <div class="subsection">📉 iPhone 12 Series</div>
 <table class="catalog-table">
-  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th></tr></thead>
+  <thead><tr><th>Modelo</th><th>Cor</th><th>Preço</th><th></th></tr></thead>
   <tbody>
-    <tr><td class="model">iPhone 12 Pro 256GB</td><td class="color">Blue</td><td class="price">R$ 2.399</td></tr>
-    <tr><td class="model">iPhone 12 Pro 128GB</td><td class="color">Black / Blue</td><td class="price">R$ 2.199</td></tr>
-    <tr><td class="model">iPhone 12 128GB <span class="badge badge-gray">Dubai</span></td><td class="color">Blue / Red</td><td class="price">R$ 1.799</td></tr>
+    <tr><td class="model">iPhone 12 Pro 256GB</td><td class="color">Blue</td><td class="price">R$ 2.399</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2012%20Pro%20256GB%20Swap%20-%20R%24%202.399"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 12 Pro 128GB</td><td class="color">Black / Blue</td><td class="price">R$ 2.199</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2012%20Pro%20128GB%20Swap%20-%20R%24%202.199"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
+    <tr><td class="model">iPhone 12 128GB <span class="badge badge-gray">Dubai</span></td><td class="color">Blue / Red</td><td class="price">R$ 1.799</td><td class="action"><a class="btn-wa" href="https://wa.me/595992785799?text=Olá!%20Tenho%20interesse%20no%20iPhone%2012%20128GB%20Dubai%20Swap%20-%20R%24%201.799"><svg><use href="#wa-icon"/></svg> Comprar</a></td></tr>
   </tbody>
 </table>
 
 </main>
 
 <footer>
-  AURA Beleza, Cosméticos e Importados &nbsp;·&nbsp;  &nbsp;·&nbsp; 05/06/2026<br>
+  AURA Beleza, Cosméticos e Importados &nbsp;·&nbsp; 05/06/2026<br>
   Preços em Reais · Sujeitos a alteração sem aviso prévio
 </footer>
 
 </div>
+
+<!-- Floating WhatsApp button -->
+<a class="float-wa" href="https://wa.me/595992785799?text=Olá!%20Vim%20pelo%20catálogo%20AURA%20e%20gostaria%20de%20mais%20informações." target="_blank" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><use href="#wa-icon"/></svg>
+</a>
+
 </body>
 </html>
