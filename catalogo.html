@@ -48,6 +48,24 @@ main{max-width:1100px;margin:0 auto;padding:14px 16px 60px}
 .float-wa svg{width:28px;height:28px;fill:#fff}
 footer{background:var(--gold);color:#fff;text-align:center;padding:14px;font-size:10px;letter-spacing:1px;line-height:1.8;margin-top:30px}
 @media(max-width:480px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.card .thumb{height:104px;font-size:34px}}
+
+/* MODAL produto */
+.modal-bg{position:fixed;inset:0;background:rgba(44,24,16,.55);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:18px}
+.modal-bg.open{display:flex;animation:fadeBg .25s ease}
+@keyframes fadeBg{from{opacity:0}to{opacity:1}}
+.modal{background:var(--card);border-radius:24px;max-width:430px;width:100%;max-height:88vh;overflow-y:auto;position:relative;animation:popM .3s cubic-bezier(.2,.8,.3,1.1);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+@keyframes popM{from{opacity:0;transform:scale(.9) translateY(16px)}to{opacity:1;transform:none}}
+.modal .m-close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.92);border:1px solid var(--divider);font-size:17px;cursor:pointer;z-index:2;color:var(--dark);display:flex;align-items:center;justify-content:center}
+.modal .m-img{width:100%;height:330px;object-fit:contain;background:linear-gradient(135deg,#fff,var(--gold-pale));border-radius:24px 24px 0 0;display:block}
+.modal .m-body{padding:18px 22px 24px;text-align:center}
+.modal .m-brand{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.modal .m-name{font-size:17px;font-weight:500;margin:6px 0 4px;color:var(--dark);line-height:1.4}
+.modal .m-price{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--gold);margin:8px 0 14px}
+.modal .m-buy{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:13px 34px;border-radius:30px;text-decoration:none}
+.modal .m-buy svg{width:15px;height:15px;fill:#fff}
+@media(max-width:480px){.modal .m-img{height:270px}}
+.card{cursor:pointer}
+
 </style>
 </head>
 <body>
@@ -75,6 +93,20 @@ footer{background:var(--gold);color:#fff;text-align:center;padding:14px;font-siz
 </main>
 
 <footer>AURA Beleza, Cosméticos e Importados · 2026<br>Preços em Reais · Sujeitos a alteração sem aviso prévio</footer>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="m-close" onclick="closeModal()">✕</button>
+    <img class="m-img" id="mImg" src="" alt="">
+    <div class="m-body">
+      <div class="m-brand" id="mBrand"></div>
+      <div class="m-name" id="mName"></div>
+      <div class="m-price" id="mPrice"></div>
+      <a class="m-buy" id="mBuy" href="#" target="_blank"><svg><use href="#wa"/></svg> Comprar no WhatsApp</a>
+    </div>
+  </div>
+</div>
+
 <a class="float-wa" href="https://wa.me/595992785799?text=Olá!%20Vim%20pelo%20catálogo%20AURA" target="_blank" aria-label="WhatsApp"><svg><use href="#wa"/></svg></a>
 
 <script>
@@ -102,12 +134,13 @@ function render(){
     const ctx = cat==="apple" ? "apple product photo" : (cat==="capilar" ? "hair product bottle" : "perfume bottle");
     const qimg = encodeURIComponent((it.b+" "+it.n.split("·")[0]+" "+ctx).slice(0,90));
     const img = `https://tse2.mm.bing.net/th?q=${qimg}&w=420&h=420&c=7&rs=1&p=0`;
-    return `<div class="card" style="animation-delay:${Math.min(i*15,300)}ms">
+    const idx = DATA[cat].items.indexOf(it);
+    return `<div class="card" style="animation-delay:${Math.min(i*15,300)}ms" onclick="openModal(${idx},event)">
       <div class="thumb"><img loading="lazy" src="${img}" alt="${it.n}" onerror="this.remove()" style="z-index:1"><span class="fb">${icon}</span>${icon? '':''}</div>
       <div class="brand">${it.b}</div>
       <div class="name">${it.n}</div>
       <div class="price">${fmt(it.p)}</div>
-      <a class="buy" href="${waLink(it.b+" "+it.n,it.p)}" target="_blank"><svg><use href="#wa"/></svg> Comprar</a>
+      <a class="buy" href="${waLink(it.b+" "+it.n,it.p)}" target="_blank" onclick="event.stopPropagation()"><svg><use href="#wa"/></svg> Comprar</a>
     </div>`;
   }).join('');
 }
@@ -117,6 +150,27 @@ function renderTabs(){
     `<div class="tab ${k===cat?'active':''}" onclick="setCat('${k}')">${DATA[k].label}</div>`).join('');
 }
 function setCat(k){cat=k;const h=location.hash.replace('#','');if(DATA[h])cat=h;renderTabs();render();window.scrollTo({top:0,behavior:'smooth'});}
+
+function imgQuery(it){
+  const ctx = cat==="apple" ? "apple product photo" : (cat==="capilar" ? "hair product bottle" : "perfume bottle");
+  return encodeURIComponent((it.b+" "+it.n.split("·")[0]+" "+ctx).slice(0,90));
+}
+function openModal(idx,ev){
+  const it=DATA[cat].items[idx];
+  document.getElementById('mImg').src="https://tse2.mm.bing.net/th?q="+imgQuery(it)+"&w=900&h=900&c=7&rs=1&p=0";
+  document.getElementById('mBrand').textContent=it.b;
+  document.getElementById('mName').textContent=it.n;
+  document.getElementById('mPrice').textContent=fmt(it.p);
+  document.getElementById('mBuy').href=waLink(it.b+" "+it.n,it.p);
+  document.getElementById('modalBg').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modalBg').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
 document.getElementById('q').addEventListener('input',e=>{q=e.target.value;render();});
 const h=location.hash.replace('#','');if(DATA[h])cat=h;renderTabs();render();
 </script>
