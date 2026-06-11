@@ -33,7 +33,9 @@ main{max-width:1100px;margin:0 auto;padding:14px 16px 60px}
 .card{background:var(--card);border:1px solid var(--divider);border-radius:16px;padding:0 0 14px;display:flex;flex-direction:column;overflow:hidden;transition:transform .18s,box-shadow .18s;animation:pop .35s ease both}
 .card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(44,24,16,.1)}
 @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
-.card .thumb{height:92px;display:flex;align-items:center;justify-content:center;font-size:42px;background:linear-gradient(135deg,var(--gold-pale),#FBF3EE)}
+.card .thumb{height:130px;position:relative;display:flex;align-items:center;justify-content:center;font-size:42px;background:linear-gradient(135deg,var(--gold-pale),#FBF3EE);overflow:hidden}
+.card .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#fff}
+.card .thumb .fb{position:relative;z-index:0}
 .card .brand{font-size:9px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);padding:10px 12px 0}
 .card .name{font-size:12px;font-weight:500;line-height:1.35;padding:3px 12px 0;flex:1}
 .card .price{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--gold);padding:8px 12px 0}
@@ -45,7 +47,7 @@ main{max-width:1100px;margin:0 auto;padding:14px 16px 60px}
 .float-wa{position:fixed;bottom:22px;right:18px;z-index:999;background:var(--wa);width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,211,102,.45);text-decoration:none}
 .float-wa svg{width:28px;height:28px;fill:#fff}
 footer{background:var(--gold);color:#fff;text-align:center;padding:14px;font-size:10px;letter-spacing:1px;line-height:1.8;margin-top:30px}
-@media(max-width:480px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.card .thumb{height:78px;font-size:36px}}
+@media(max-width:480px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.card .thumb{height:104px;font-size:34px}}
 </style>
 </head>
 <body>
@@ -97,8 +99,11 @@ function render(){
   document.getElementById('empty').style.display=items.length?"none":"block";
   grid.innerHTML=items.map((it,i)=>{
     const icon = cat==="apple" ? (APPLE_ICONS[it.b]||"📱") : ICONS[cat];
+    const ctx = cat==="apple" ? "apple product photo" : (cat==="capilar" ? "hair product bottle" : "perfume bottle");
+    const qimg = encodeURIComponent((it.b+" "+it.n.split("·")[0]+" "+ctx).slice(0,90));
+    const img = `https://tse2.mm.bing.net/th?q=${qimg}&w=420&h=420&c=7&rs=1&p=0`;
     return `<div class="card" style="animation-delay:${Math.min(i*15,300)}ms">
-      <div class="thumb">${icon}</div>
+      <div class="thumb"><img loading="lazy" src="${img}" alt="${it.n}" onerror="this.remove()" style="z-index:1"><span class="fb">${icon}</span>${icon? '':''}</div>
       <div class="brand">${it.b}</div>
       <div class="name">${it.n}</div>
       <div class="price">${fmt(it.p)}</div>
